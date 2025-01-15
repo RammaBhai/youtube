@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="music.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1> Broken Hearted 💘</h1>
+        <div class="card">
+            <video id="video" muted autoplay loop>
+                <source src="/background video Nostalgic-Starry-Sky-Tape.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <audio id="audio">
+                <source src="/03-Broken-Hearted-Melody-FULL-SM368_preview.mp3" type="audio/mpeg">
+                Your browser does not support the audio tag.
+            </audio>
+            <div class="controls">
+                <button class="play-btn" id="playButton" aria-label="Play/Pause">
+                    <i class="fa-solid fa-play" id="playIcon"></i>
+                </button>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <button class="mute-btn" id="muteButton" aria-label="Mute/Unmute">
+                    <i class="fa-solid fa-volume-high" id="muteIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+<script src="music.js"></script>
+</body>
+
+</html>
