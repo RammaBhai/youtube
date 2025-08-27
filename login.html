@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Login | RammaFurniture</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@300;400&family=Source+Code+Pro:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-black: #0a0a0a;
+      --secondary-black: #1a1a1a;
+      --tertiary-black: #2a2a2a;
+      --primary-white: #ffffff;
+      --secondary-white: #f5f5f5;
+      --tertiary-white: #e5e5e5;
+      --accent-gray: #666666;
+      --light-gray: #d9d9d9;
+      --medium-gray: #999999;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --primary: #3b82f6;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --animation-timing: 0.3s;
+      --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --focus-outline: 2px dashed #0a0a0a;
+      --focus-offset: 3px;
+    }
+
+    /* Dark Theme */
+    .theme-dark {
+      --primary-black: #ffffff;
+      --secondary-black: #f5f5f5;
+      --tertiary-black: #e5e5e5;
+      --primary-white: #0a0a0a;
+      --secondary-white: #0f0f0f;
+      --tertiary-white: #161616;
+      --accent-gray: #b0b0b0;
+      --light-gray: #2a2a2a;
+      --medium-gray: #808080;
+      --card-shadow: 0 6px 28px rgba(0, 0, 0, 0.5);
+      --hover-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+      --focus-outline: 2px dashed #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--primary-black);
+      background-color: var(--secondary-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Utility - focus */
+    :focus-visible {
+      outline: var(--focus-outline);
+      outline-offset: var(--focus-offset);
+    }
+
+    /* Header (minimal so page works standalone) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--primary-white);
+      border-bottom: 1px solid var(--tertiary-white);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      box-shadow: var(--card-shadow);
+      backdrop-filter: saturate(180%) blur(6px);
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary-black);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      transition: var(--transition);
+    }
+
+    .logo:hover { opacity: 0.85; }
+
+    .logo-icon { font-size: 20px; }
+
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+
+    .icon-btn, .nav-action-btn > a { color: var(--primary-black); text-decoration: none; position: relative; }
+    .icon-btn:hover { opacity: 0.85; }
+
+    .count-badge,
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: var(--primary-black);
+      color: var(--primary-white);
+      border-radius: 999px;
+      font-size: 11px;
+      padding: 2px 6px;
+      line-height: 1;
+    }
+
+    /* Search & Wishlist dropdown shells */
+    .search-wrapper { position: relative; }
+    .search-container {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      width: min(80vw, 440px);
+      background: var(--primary-white);
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+      display: none;
+    }
+    .search-container.active { display: block; }
+    .search-input-container { position: relative; }
+    .search-input { width: 100%; padding: 12px 38px 12px 12px; border: 1px solid var(--light-gray); border-radius: 8px; }
+    .search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--accent-gray); }
+    .search-options { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .search-option { padding: 6px 10px; border: 1px solid var(--light-gray); border-radius: 20px; font-size: 12px; cursor: pointer; }
+    .search-option.active { background: var(--primary-black); color: var(--primary-white); border-color: var(--primary-black); }
+    .search-results { margin-top: 10px; max-height: 260px; overflow: auto; }
+
+    .wishlist-wrapper { position: relative; }
+    .wishlist-preview {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      width: min(80vw, 380px);
+      background: var(--primary-white);
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+      display: none;
+    }
+    .wishlist-preview.active { display: block; }
+
+    /* Mobile sidebar & bottom bar */
+    .mobile-sidebar { position: fixed; inset: 0 0 0 auto; width: min(84vw, 360px); background: var(--primary-white); border-left: 1px solid var(--light-gray); transform: translateX(100%); transition: var(--transition); z-index: 60; padding: 20px; }
+    .mobile-sidebar.active { transform: translateX(0); }
+    .close-sidebar { background: none; border: none; font-size: 20px; color: var(--primary-black); }
+    .sidebar-nav-items { list-style: none; margin-top: 16px; display: grid; gap: 8px; }
+    .sidebar-nav-link { display: flex; align-items: center; gap: 10px; color: var(--primary-black); text-decoration: none; padding: 10px; border-radius: 8px; transition: var(--transition); }
+    .sidebar-nav-link:hover { background: var(--secondary-white); }
+
+    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--primary-white); border-top: 1px solid var(--light-gray); z-index: 45; }
+    .bottom-nav-items { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); }
+    .bottom-nav-link { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0; color: var(--primary-black); text-decoration: none; }
+
+    /* Login Section Styles */
+    .login-container {
+      display: flex;
+      min-height: calc(100vh - 80px);
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      flex: 1;
+    }
+
+    .login-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .login-hero {
+      animation: slideInLeft 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .login-hero img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      transform: scale(1);
+    }
+
+    .login-hero:hover img { transform: scale(1.05); }
+
+    .login-hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+      opacity: 0;
+      transition: var(--transition);
+      border-radius: 16px;
+    }
+
+    .login-hero:hover::after { opacity: 1; }
+
+    .login-form-container {
+      background: var(--primary-white);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      border: 1px solid var(--light-gray);
+      animation: slideInRight 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary-black);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.5s var(--ease-out-back);
+    }
+
+    .login-form-container:hover::before { transform: scaleY(1); }
+    .login-form-container:hover { box-shadow: var(--hover-shadow); transform: translateY(-5px); }
+
+    .login-header { text-align: center; margin-bottom: 30px; }
+
+    .login-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .login-title:after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background-color: var(--primary-black);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: width 0.5s var(--ease-out-back);
+    }
+
+    .login-form-container:hover .login-title:after { width: 100px; }
+
+    .login-subtitle { color: var(--accent-gray); font-family: 'Montserrat', sans-serif; font-size: 16px; margin-top: 15px; }
+
+    .login-form { display: flex; flex-direction: column; gap: 20px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
+
+    .form-label { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 14px; color: var(--primary-black); display: flex; align-items: center; gap: 5px; }
+
+    .input-with-icon { position: relative; }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 45px 14px 15px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      font-size: 16px;
+      background: var(--primary-white);
+      color: var(--primary-black);
+    }
+
+    .form-input::placeholder { color: var(--medium-gray); }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-black);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-input.error { border-color: var(--error); box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
+    .form-input.success { border-color: var(--success); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+
+    .input-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-gray);
+      transition: var(--transition);
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .form-input:focus + .input-icon { color: var(--primary-black); }
+
+    .password-toggle { cursor: pointer; transition: var(--transition); }
+    .password-toggle:hover { color: var(--primary-black); transform: scale(1.06); }
+
+    .form-options { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+
+    .remember-me { display: flex; align-items: center; gap: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; cursor: pointer; }
+    .remember-me input { cursor: pointer; }
+
+    .forgot-password { color: var(--primary-black); text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; transition: var(--transition); position: relative; }
+    .forgot-password:after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--primary-black); transition: width 0.3s ease; }
+    .forgot-password:hover:after { width: 100%; }
+
+    .login-btn {
+      padding: 14px;
+      background: var(--primary-black);
+      color: var(--primary-white);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-btn:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: 0.5s; }
+    .login-btn:hover:before { left: 100%; }
+    .login-btn:hover { background: var(--secondary-black); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+    .login-btn:active { transform: translateY(0); }
+
+    .divider { display: flex; align-items: center; margin: 25px 0; color: var(--accent-gray); font-family: 'Montserrat', sans-serif; font-size: 14px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background-color: var(--light-gray); }
+    .divider span { padding: 0 15px; }
+
+    .social-login { display: flex; flex-direction: column; gap: 12px; }
+    .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; background: var(--primary-white); font-family: 'Montserrat', sans-serif; font-weight: 500; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; color: var(--primary-black); }
+    .social-btn:before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(255, 255, 255, 0.1), transparent); transform: translateY(100%); transition: transform 0.3s ease; }
+    .social-btn:hover:before { transform: translateY(0); }
+    .social-btn:hover { background: var(--secondary-white); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); }
+    .social-btn.google { color: #DB4437; }
+    .social-btn.facebook { color: #4267B2; }
+
+    .signup-link { text-align: center; margin-top: 25px; font-family: 'Montserrat', sans-serif; font-size: 14px; color: var(--accent-gray); }
+    .signup-link a { color: var(--primary-black); font-weight: 600; text-decoration: none; transition: var(--transition); position: relative; }
+    .signup-link a:after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--primary-black); transition: width 0.3s ease; }
+    .signup-link a:hover:after { width: 100%; }
+
+    /* Password Strength Meter */
+    .password-strength { height: 5px; border-radius: 3px; margin-top: 8px; background: var(--light-gray); overflow: hidden; transition: var(--transition); }
+    .password-strength-meter { height: 100%; width: 0; transition: width 0.3s ease; }
+    .strength-weak { background: var(--error); width: 33%; }
+    .strength-medium { background: var(--warning); width: 66%; }
+    .strength-strong { background: var(--success); width: 100%; }
+    .password-strength-text { font-size: 12px; margin-top: 5px; text-align: right; height: 15px; transition: var(--transition); }
+
+    /* Validation Messages */
+    .validation-message { font-size: 12px; margin-top: 5px; height: 15px; transition: var(--transition); }
+    .validation-error { color: var(--error); }
+    .validation-success { color: var(--success); }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 350px;
+    }
+    .toast.success { background-color: var(--success); }
+    .toast.error { background-color: var(--error); }
+    .toast.warning { background-color: var(--warning); }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* Back to Top */
+    .back-to-top { position: fixed; right: 16px; bottom: 80px; width: 42px; height: 42px; border-radius: 999px; background: var(--primary-black); color: var(--primary-white); display: grid; place-items: center; cursor: pointer; box-shadow: var(--card-shadow); opacity: 0; transform: translateY(10px); pointer-events: none; transition: var(--transition); }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle { position: fixed; right: 16px; bottom: 24px; width: 44px; height: 44px; border-radius: 999px; background: var(--primary-white); border: 1px solid var(--light-gray); color: var(--primary-black); display: grid; place-items: center; box-shadow: var(--card-shadow); cursor: pointer; transition: var(--transition); }
+    .dark-mode-toggle:hover { transform: translateY(-2px) scale(1.02); box-shadow: var(--hover-shadow); }
+
+    /* Footer Styles */
+    footer { margin-top: 40px; background: var(--primary-white); border-top: 1px solid var(--tertiary-white); }
+    .footer-content { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; padding: 30px 0; }
+    .footer-column h3 { font-size: 18px; margin-bottom: 10px; }
+    .footer-links { list-style: none; display: grid; gap: 6px; }
+    .footer-links a { color: var(--primary-black); text-decoration: none; opacity: 0.85; }
+    .footer-links a:hover { opacity: 1; text-decoration: underline; }
+    .newsletter-form { display: flex; gap: 8px; }
+    .newsletter-form input { flex: 1; padding: 10px 12px; border: 1px solid var(--light-gray); border-radius: 8px; }
+    .newsletter-form button { padding: 10px 14px; border-radius: 8px; border: none; background: var(--primary-black); color: var(--primary-white); cursor: pointer; }
+    .copyright { padding: 12px 0 24px; border-top: 1px solid var(--tertiary-white); color: var(--accent-gray); font-size: 14px; text-align: center; }
+
+    /* Loading Animation */
+    .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary-white); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease; }
+    .loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-spinner { width: 50px; height: 50px; border: 3px solid var(--secondary-white); border-top: 3px solid var(--primary-black); border-radius: 50%; animation: spin 1s linear infinite; }
+
+    /* Security Badge */
+    .security-badge { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; padding: 10px; background: var(--secondary-white); border-radius: 8px; font-size: 12px; }
+    .security-badge i { color: var(--success); }
+
+    /* Rate Limiting */
+    .rate-limit-message { font-size: 12px; text-align: center; margin-top: 10px; color: var(--accent-gray); display: none; }
+
+    /* CAPTCHA Styles */
+    .captcha-container { background: var(--secondary-white); padding: 15px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+    .captcha-code { font-family: 'Roboto Mono', monospace; font-size: 20px; letter-spacing: 3px; background: var(--primary-white); padding: 8px 15px; border-radius: 4px; user-select: none; }
+    .captcha-refresh { background: none; border: none; cursor: pointer; color: var(--accent-gray); transition: var(--transition); }
+    .captcha-refresh:hover { color: var(--primary-black); transform: rotate(90deg); }
+    .captcha-input { width: 100%; padding: 12px 15px; border: 1px solid var(--light-gray); border-radius: 8px; font-family: 'Inter', sans-serif; }
+
+    /* Animations */
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+    @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); } 70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+    .shake { animation: shake 0.5s; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .login-content { grid-template-columns: 1fr; gap: 40px; }
+      .login-hero { display: none; }
+      .header-container { padding: 15px 20px; }
+      .footer-content { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .login-form-container { padding: 30px; }
+      .login-title { font-size: 28px; }
+      .form-options { flex-direction: column; align-items: flex-start; gap: 15px; }
+      .footer-content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
+  <!-- Header & Navigation -->
+  <header>
+    <!-- Loading Animation -->
+    <div class="loader" aria-hidden="true">
+      <div class="loader-spinner" aria-label="Loading"></div>
+    </div>
+
+    <div class="header-container">
+      <a href="/Home/home.html" class="logo" aria-label="RammaFurniture home">
+        <i class="fas fa-couch logo-icon" aria-hidden="true"></i>
+        Ramma<span>Furniture</span>
+      </a>
+
+      <div class="nav-actions">
+        <div class="nav-action-btn search-wrapper">
+          <button class="search-icon-main icon-btn" id="searchIcon" aria-expanded="false" aria-controls="searchContainer" aria-label="Open search">
+            <i class="fas fa-search"></i>
+          </button>
+          <div class="search-container" id="searchContainer" role="dialog" aria-modal="false" aria-label="Search">
+            <div class="search-input-container">
+              <input type="text" class="search-input" placeholder="Search for furniture..." id="searchInput" aria-label="Search input">
+              <i class="fas fa-search search-icon" id="searchButton" aria-hidden="true"></i>
+            </div>
+            <div class="search-options" role="tablist" aria-label="Search categories">
+              <div class="search-option active" data-category="all" role="tab" aria-selected="true" tabindex="0">All</div>
+              <div class="search-option" data-category="chairs" role="tab" aria-selected="false" tabindex="0">Chairs</div>
+              <div class="search-option" data-category="tables" role="tab" aria-selected="false" tabindex="0">Tables</div>
+              <div class="search-option" data-category="sofas" role="tab" aria-selected="false" tabindex="0">Sofas</div>
+              <div class="search-option" data-category="storage" role="tab" aria-selected="false" tabindex="0">Storage</div>
+            </div>
+            <div class="search-results" id="searchResults" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="nav-action-btn wishlist-wrapper">
+          <a class="icon-btn" id="wishlistIcon" href="#" aria-label="Wishlist" aria-expanded="false" aria-controls="wishlistPreview">
+            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+            <span class="count-badge" id="wishlistCount">3</span>
+          </a>
+          <div class="wishlist-preview" id="wishlistPreview" role="dialog" aria-modal="false" aria-label="Wishlist preview">
+            <h3>Your Wishlist</h3>
+            <div id="wishlistItemsPreview"></div>
+            <a href="/nav-btn/favourite.html" class="view-wishlist-btn" id="viewWishlistBtn">View Full Wishlist</a>
+          </div>
+        </div>
+
+        <div class="nav-action-btn">
+          <a href="/Shopping-Cart/cart.html" id="cartIcon" aria-label="Cart">
+            <i class="fas fa-shopping-cart icon-btn" aria-hidden="true"></i>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+
+        <div class="nav-action-btn">
+          <a class="icon-btn" id="userIcon" href="/User-Account/account.html" aria-label="User Account" aria-current="page">
+            <i class="fas fa-user" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <button class="nav-action-btn menu-toggle" id="menuToggle" aria-label="Open menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar" aria-hidden="true">
+      <button class="close-sidebar" id="closeSidebar" aria-label="Close menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      <ul class="sidebar-nav-items">
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-shopping-cart"></i><span>Shop</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-layer-group"></i><span>Collections</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-info-circle"></i><span>About</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-phone"></i><span>Contact</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-heart"></i><span>Wishlist</span></a></li>
+        <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-gift"></i><span>Offers</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Left Sidebar (Desktop) -->
+    <div class="left-sidebar" id="leftSidebar" aria-hidden="true" style="display:none;"></div>
+
+    <!-- Bottom Bar (Mobile) -->
+    <div class="bottom-bar">
+      <ul class="bottom-nav-items">
+        <li class="bottom-nav-item"><a href="#" class="bottom-nav-link"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li class="bottom-nav-item"><a href="#" class="bottom-nav-link"><i class="fas fa-shopping-cart"></i><span>Shop</span></a></li>
+        <li class="bottom-nav-item"><a href="#" class="bottom-nav-link" id="mobileSearchIcon"><i class="fas fa-search"></i><span>Search</span></a></li>
+        <li class="bottom-nav-item"><a href="#" class="bottom-nav-link"><i class="fas fa-heart"></i><span>Wishlist</span></a></li>
+        <li class="bottom-nav-item"><a href="#" class="bottom-nav-link" id="mobileUserIcon"><i class="fas fa-user"></i><span>Account</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Login Content -->
+    <div class="login-container">
+      <div class="login-content">
+        <div class="login-form-container" aria-labelledby="loginTitle">
+          <div class="login-header">
+            <div class="login-hero" aria-hidden="true">
+              <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=870&q=80" alt="RammaFurniture Interior">
+            </div>
+            <h1 class="login-title" id="loginTitle">Welcome Back</h1>
+            <p class="login-subtitle">Sign in to access your account and continue your shopping experience</p>
+          </div>
+
+          <form class="login-form" id="loginForm" novalidate>
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <div class="input-with-icon">
+                <input type="email" id="email" class="form-input" placeholder="Enter your email" required aria-describedby="emailValidation">
+                <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+              </div>
+              <div class="validation-message" id="emailValidation" aria-live="polite"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-with-icon">
+                <input type="password" id="password" class="form-input" placeholder="Enter your password" required minlength="6" aria-describedby="passwordStrengthText passwordValidation">
+                <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                <button type="button" class="input-icon password-toggle" id="passwordToggle" aria-label="Toggle password visibility" aria-pressed="false">
+                  <i class="fas fa-eye-slash" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="password-strength" aria-hidden="true">
+                <div class="password-strength-meter" id="passwordStrengthMeter"></div>
+              </div>
+              <div class="password-strength-text" id="passwordStrengthText" aria-live="polite"></div>
+              <div class="validation-message" id="passwordValidation" aria-live="polite"></div>
+            </div>
+
+            <!-- Honeypot for bots -->
+            <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;" aria-hidden="true">
+
+            <!-- CAPTCHA Section (shown after multiple failed attempts) -->
+            <div id="captchaSection" style="display: none;">
+              <div class="captcha-container">
+                <span class="captcha-code" id="captchaCode">A3B7</span>
+                <button type="button" class="captcha-refresh" id="captchaRefresh" aria-label="Refresh CAPTCHA">
+                  <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                </button>
+              </div>
+              <input type="text" class="captcha-input" id="captchaInput" placeholder="Enter the code above" aria-describedby="captchaValidation">
+              <div class="validation-message" id="captchaValidation" aria-live="polite"></div>
+            </div>
+
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" id="rememberMe">
+                <span>Remember me</span>
+              </label>
+              <a href="/User-Account/forgot-password.html" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <div class="rate-limit-message" id="rateLimitMessage">
+              Too many attempts. Please wait <span id="countdown">30</span> seconds.
+            </div>
+
+            <button type="submit" class="login-btn" id="loginButton">Sign In</button>
+          </form>
+
+          <div class="security-badge" aria-hidden="true">
+            <i class="fas fa-shield-alt"></i>
+            <span>Your information is securely encrypted</span>
+          </div>
+
+          <div class="divider"><span>Or continue with</span></div>
+
+          <div class="social-login">
+            <button class="social-btn google" id="googleLogin" aria-label="Sign in with Google">
+              <i class="fab fa-google" aria-hidden="true"></i>
+              Sign in with Google
+            </button>
+            <button class="social-btn facebook" id="facebookLogin" aria-label="Sign in with Facebook">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+              Sign in with Facebook
+            </button>
+          </div>
+
+          <div class="signup-link">
+            Don't have an account? <a href="/User-Account/register.html">Create one here</a>
+          </div>
+
+          <div class="signup-link" style="margin-top: 15px;">
+            <a href="/User-Account/account.html">Return to Account Overview</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>RammaFurniture</h3>
+            <p>Creating beautiful spaces with thoughtfully designed furniture that combines form, function, and durability.</p>
+            <div class="social-icons" aria-label="Social links">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-column">
+            <h3>Shop</h3>
+            <ul class="footer-links">
+              <li><a href="#">Living Room</a></li>
+              <li><a href="#">Dining Room</a></li>
+              <li><a href="#">Bedroom</a></li>
+              <li><a href="#">Office</a></li>
+              <li><a href="#">Outdoor</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Company</h3>
+            <ul class="footer-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Sustainability</a></li>
+              <li><a href="#">Affiliate Program</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Support</h3>
+            <ul class="footer-links">
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Shipping & Returns</a></li>
+              <li><a href="#">Warranty</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Store Locator</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Newsletter</h3>
+            <p>Subscribe to get special offers, free giveaways, and new product alerts. </p>
+            <form class="newsletter-form" onsubmit="event.preventDefault();document.getElementById('toast').focus();">
+              <input type="email" placeholder="Your email address" aria-label="Your email">
+              <button type="submit">Subscribe <i class="fas fa-paper-plane" id="rotate" aria-hidden="true"></i></button>
+            </form>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>&copy; <span id="year"></span> RammaFurniture. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" aria-label="Back to top" role="button" tabindex="0">
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <div class="dark-mode-toggle" id="darkModeToggle" title="Toggle dark mode" aria-label="Toggle dark mode" aria-pressed="false" role="button" tabindex="0">
+      <i id="darkModeIcon" class="fas fa-moon" aria-hidden="true"></i>
+    </div>
+
+    <div class="toast" id="toast" tabindex="-1" aria-live="polite" role="status"></div>
+  </main>
+
+  <script>
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    const toast = document.getElementById('toast');
+    const backToTopBtn = document.querySelector('.back-to-top');
+    const loginButton = document.getElementById('loginButton');
+    const passwordStrengthMeter = document.getElementById('passwordStrengthMeter');
+    const passwordStrengthText = document.getElementById('passwordStrengthText');
+    const emailValidation = document.getElementById('emailValidation');
+    const passwordValidation = document.getElementById('passwordValidation');
+    const rateLimitMessage = document.getElementById('rateLimitMessage');
+    const countdownElement = document.getElementById('countdown');
+    const captchaSection = document.getElementById('captchaSection');
+    const captchaCode = document.getElementById('captchaCode');
+    const captchaRefresh = document.getElementById('captchaRefresh');
+    const captchaInput = document.getElementById('captchaInput');
+    const captchaValidation = document.getElementById('captchaValidation');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const searchIcon = document.getElementById('searchIcon');
+    const searchContainer = document.getElementById('searchContainer');
+    const wishlistIcon = document.getElementById('wishlistIcon');
+    const wishlistPreview = document.getElementById('wishlistPreview');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+
+    // State variables
+    let loginAttempts = 0;
+    let isRateLimited = false;
+    let countdownInterval;
+
+    // Toast
+    function showToast(message, type = 'success') {
+      const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+      toast.innerHTML = `<i class="fas ${icon}" aria-hidden="true"></i> ${message}`;
+      toast.className = `toast ${type} show`;
+      toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+      toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+      setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
+    // Password visibility toggle
+    function togglePasswordVisibility() {
+      const isHidden = passwordInput.type === 'password';
+      passwordInput.type = isHidden ? 'text' : 'password';
+      passwordToggle.setAttribute('aria-pressed', String(isHidden));
+      const iconEl = passwordToggle.querySelector('i');
+      iconEl.classList.toggle('fa-eye-slash', !isHidden);
+      iconEl.classList.toggle('fa-eye', isHidden);
+    }
+    passwordToggle.addEventListener('click', togglePasswordVisibility);
+    passwordToggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePasswordVisibility(); } });
+
+    // Password strength
+    passwordInput.addEventListener('input', function () {
+      const password = this.value;
+      let strength = 0; let message = '';
+      if (password.length > 5) strength += 1;
+      if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 1;
+      if (password.match(/([0-9])/)) strength += 1;
+      if (password.match(/[!,@,#,$,%,^,&,*,?,_,~]/)) strength += 1;
+      switch (strength) {
+        case 0: passwordStrengthMeter.className = 'password-strength-meter'; message = ''; break;
+        case 1: passwordStrengthMeter.className = 'password-strength-meter strength-weak'; message = 'Weak'; break;
+        case 2: passwordStrengthMeter.className = 'password-strength-meter strength-medium'; message = 'Medium'; break;
+        default: passwordStrengthMeter.className = 'password-strength-meter strength-strong'; message = 'Strong';
+      }
+      passwordStrengthText.textContent = message;
+    });
+
+    // Real-time validation
+    emailInput.addEventListener('input', validateEmail);
+    emailInput.addEventListener('blur', validateEmail);
+    passwordInput.addEventListener('blur', validatePassword);
+
+    function validateEmail() {
+      const email = emailInput.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) {
+        emailValidation.textContent = '';
+        emailValidation.className = 'validation-message';
+        emailInput.classList.remove('error', 'success');
+        emailInput.removeAttribute('aria-invalid');
+        return false;
+      }
+      if (!emailRegex.test(email)) {
+        emailValidation.textContent = 'Please enter a valid email address';
+        emailValidation.className = 'validation-message validation-error';
+        emailInput.classList.add('error');
+        emailInput.classList.remove('success');
+        emailInput.setAttribute('aria-invalid', 'true');
+        return false;
+      } else {
+        emailValidation.textContent = 'Email format is valid';
+        emailValidation.className = 'validation-message validation-success';
+        emailInput.classList.add('success');
+        emailInput.classList.remove('error');
+        emailInput.removeAttribute('aria-invalid');
+        return true;
+      }
+    }
+
+    function validatePassword() {
+      const password = passwordInput.value;
+      if (!password) {
+        passwordValidation.textContent = '';
+        passwordValidation.className = 'validation-message';
+        passwordInput.classList.remove('error', 'success');
+        passwordInput.removeAttribute('aria-invalid');
+        return false;
+      }
+      if (password.length < 6) {
+        passwordValidation.textContent = 'Password must be at least 6 characters';
+        passwordValidation.className = 'validation-message validation-error';
+        passwordInput.classList.add('error');
+        passwordInput.classList.remove('success');
+        passwordInput.setAttribute('aria-invalid', 'true');
+        return false;
+      } else {
+        passwordValidation.textContent = 'Password format is valid';
+        passwordValidation.className = 'validation-message validation-success';
+        passwordInput.classList.add('success');
+        passwordInput.classList.remove('error');
+        passwordInput.removeAttribute('aria-invalid');
+        return true;
+      }
+    }
+
+    // CAPTCHA
+    function generateCaptcha() {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 4; i++) result += characters.charAt(Math.floor(Math.random() * characters.length));
+      captchaCode.textContent = result;
+      return result;
+    }
+    captchaRefresh.addEventListener('click', function () {
+      generateCaptcha();
+      captchaInput.value = '';
+      captchaValidation.textContent = '';
+    });
+
+    // Rate limiting
+    function startRateLimit() {
+      isRateLimited = true;
+      loginButton.disabled = true;
+      rateLimitMessage.style.display = 'block';
+      let seconds = 30;
+      countdownElement.textContent = seconds;
+      countdownInterval = setInterval(() => {
+        seconds--;
+        countdownElement.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(countdownInterval);
+          isRateLimited = false;
+          loginButton.disabled = false;
+          rateLimitMessage.style.display = 'none';
+          captchaSection.style.display = 'none';
+        }
+      }, 1000);
+    }
+
+    // Submit handler
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (document.getElementById('website').value) { return; } // bot honeypot
+      if (isRateLimited) { showToast('Please wait before trying again', 'error'); return; }
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      if (!validateEmail() | !validatePassword()) {
+        loginForm.classList.add('shake');
+        setTimeout(() => loginForm.classList.remove('shake'), 500);
+        showToast('Please fix the errors in the form', 'error');
+        return;
+      }
+
+      if (captchaSection.style.display === 'block') {
+        if (captchaInput.value !== captchaCode.textContent) {
+          captchaValidation.textContent = 'CAPTCHA code is incorrect';
+          captchaValidation.className = 'validation-message validation-error';
+          loginForm.classList.add('shake');
+          setTimeout(() => loginForm.classList.remove('shake'), 500);
+          showToast('CAPTCHA verification failed', 'error');
+          return;
+        } else {
+          captchaValidation.textContent = 'CAPTCHA verified';
+          captchaValidation.className = 'validation-message validation-success';
+        }
+      }
+
+      const originalText = loginButton.innerHTML;
+      loginButton.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Signing In...';
+      loginButton.disabled = true;
+
+      setTimeout(() => {
+        if (loginAttempts < 2) {
+          loginAttempts++;
+          if (loginAttempts >= 2) {
+            captchaSection.style.display = 'block';
+            generateCaptcha();
+          }
+          if (loginAttempts >= 3) {
+            startRateLimit();
+          }
+          showToast('Invalid email or password', 'error');
+          loginButton.innerHTML = originalText;
+          loginButton.disabled = false;
+        } else {
+          showToast('Login successful! Redirecting...');
+          if (rememberMe) { localStorage.setItem('savedEmail', email); } else { localStorage.removeItem('savedEmail'); }
+          loginAttempts = 0;
+          setTimeout(() => { window.location.href = '/User-Account/account.html'; }, 1200);
+        }
+      }, 1200);
+    });
+
+    // Social login
+    document.getElementById('googleLogin').addEventListener('click', () => showToast('Google login feature coming soon', 'warning'));
+    document.getElementById('facebookLogin').addEventListener('click', () => showToast('Facebook login feature coming soon', 'warning'));
+
+    // Back to top
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) { backToTopBtn.classList.add('visible'); } else { backToTopBtn.classList.remove('visible'); }
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) { header.classList.add('scrolled'); } else { header.classList.remove('scrolled'); }
+    });
+    backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    backToTopBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
+
+    // Sidebar
+    menuToggle.addEventListener('click', () => { mobileSidebar.classList.add('active'); document.body.style.overflow = 'hidden'; mobileSidebar.setAttribute('aria-hidden', 'false'); });
+    closeSidebar.addEventListener('click', () => { mobileSidebar.classList.remove('active'); document.body.style.overflow = 'auto'; mobileSidebar.setAttribute('aria-hidden', 'true'); });
+
+    // Search dropdown
+    searchIcon.addEventListener('click', () => {
+      const isActive = searchContainer.classList.toggle('active');
+      searchIcon.setAttribute('aria-expanded', String(isActive));
+      if (isActive) { document.getElementById('searchInput').focus(); }
+    });
+
+    // Wishlist preview
+    wishlistIcon.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isActive = wishlistPreview.classList.toggle('active');
+      wishlistIcon.setAttribute('aria-expanded', String(isActive));
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchIcon.contains(e.target) && !searchContainer.contains(e.target)) { searchContainer.classList.remove('active'); searchIcon.setAttribute('aria-expanded', 'false'); }
+      if (!wishlistIcon.contains(e.target) && !wishlistPreview.contains(e.target)) { wishlistPreview.classList.remove('active'); wishlistIcon.setAttribute('aria-expanded', 'false'); }
+    });
+
+    // Global ESC to close overlays
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (mobileSidebar.classList.contains('active')) { closeSidebar.click(); }
+        if (searchContainer.classList.contains('active')) { searchContainer.classList.remove('active'); searchIcon.setAttribute('aria-expanded', 'false'); }
+        if (wishlistPreview.classList.contains('active')) { wishlistPreview.classList.remove('active'); wishlistIcon.setAttribute('aria-expanded', 'false'); }
+      }
+    });
+
+    // Hide loader on load
+    window.addEventListener('load', () => {
+      const loader = document.querySelector('.loader');
+      setTimeout(() => { loader.classList.add('hidden'); }, 600);
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+
+    // Theme handling
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (theme === 'dark') {
+        root.classList.add('theme-dark');
+        darkModeIcon.classList.remove('fa-moon');
+        darkModeIcon.classList.add('fa-sun');
+        darkModeToggle.setAttribute('aria-pressed', 'true');
+        metaTheme && metaTheme.setAttribute('content', '#0a0a0a');
+      } else {
+        root.classList.remove('theme-dark');
+        darkModeIcon.classList.add('fa-moon');
+        darkModeIcon.classList.remove('fa-sun');
+        darkModeToggle.setAttribute('aria-pressed', 'false');
+        metaTheme && metaTheme.setAttribute('content', '#ffffff');
+      }
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) { applyTheme(saved); return; }
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('theme-dark');
+      const next = isDark ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+    darkModeToggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); darkModeToggle.click(); } });
+
+    // Initialize the page
+    function init() {
+      initTheme();
+      const savedEmail = localStorage.getItem('savedEmail');
+      if (savedEmail) { emailInput.value = savedEmail; document.getElementById('rememberMe').checked = true; }
+    }
+    init();
+  </script>
+  <link rel="stylesheet" href="/Home/home.css">
+  <script src="/Home/home.js"></script>
+
+</body>
+
+</html>
